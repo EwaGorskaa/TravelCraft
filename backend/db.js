@@ -3,8 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const mongoConnString = process.env.MONGO;
 
-mongoose.connect(mongoConnString, {
-    useNewUrlParser: true})
+mongoose.connect(mongoConnString, { useNewUrlParser: true })
         .then((result) => {
             console.log("Połączono z bazą")
         })
