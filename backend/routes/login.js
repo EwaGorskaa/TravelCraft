@@ -15,11 +15,11 @@ router.post("/", async (req, res) => {
             $or: [{ email: req.body.emailOrUsername }, { login: req.body.emailOrUsername }]}
         )
 
-
         if(!user){
             return  res.status(401).send({ message: "Niepoprawne dane logowania"})
         }
-
+        console.log("req.body:", req.body);
+        console.log("user from DB:", user);
         const validPasswd = await bcrypt.compare(req.body.password, user.password)
         if(!validPasswd){
             return res.status(401).send({ message: "Niepoprawne dane logowania"})
@@ -28,6 +28,7 @@ router.post("/", async (req, res) => {
         res.status(200).send({ message: "zalogowano"})
     }
     catch (error){
+        console.log(error)
         res.status(500).send({ message: "Błąd serwera"})
     }
 })

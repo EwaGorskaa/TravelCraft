@@ -5,7 +5,7 @@ import axios from "axios"
 
 function Login(){
     const [error, setError] = useState("")
-    const [data, setData] = useState({ emailOrUsername: "", Password: "" })
+    const [data, setData] = useState({ emailOrUsername: "", password: "" })
 
     const handleChange = ({ currentTarget: input }) => {
         setData({ ...data, [input.name]: input.value })
@@ -14,10 +14,10 @@ function Login(){
     const handleSubmit = async (e) => {
         e.preventDefault()
         try{
-            const url = "http://localhost:3000/api/login"
+            const url = "http://localhost:3001/api/login"
             const { data: res } = await axios.post(url, data)
             localStorage.setItem("token", res.data)
-            window.location = "/"
+            window.location = "/"   
         }
         catch (error){
             if(error.response && error.response.status >=400 && error.response.status <= 500){
@@ -33,8 +33,8 @@ function Login(){
 
             <h2 className="font5 text-xl text-center m-4">Zaloguj się</h2>
             <form className="max-w-md mx-auto flex flex-col" onSubmit={handleSubmit}>
-                <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 text-color5 bg-bgcolor2 shadow-sm placeholder-color5" onChange={handleChange} value={data.login}  placeholder="Email lub Login" name="emailOrUsername" required />
-                <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 text-color5 bg-bgcolor2 shadow-sm placeholder-color5" onChange={handleChange} value={data.Password} type="password" placeholder="Hasło" name="Password" required />
+                <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 text-color5 bg-bgcolor2 shadow-sm placeholder-color5" onChange={handleChange} value={data.emailOrUsername}  placeholder="Email lub Login" name="emailOrUsername" required />
+                <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 text-color5 bg-bgcolor2 shadow-sm placeholder-color5" onChange={handleChange} value={data.password} type="password" placeholder="Hasło" name="password" required />
                 {error && 
                 <div className="error">
                     {error}

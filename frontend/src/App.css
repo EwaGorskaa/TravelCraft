@@ -64,7 +64,7 @@
   letter-spacing: 0.06em;
 }
 .error{
-  color: red;
+  color: rgb(203, 75, 75);
 }
 .App-logo {
   height: 40vmin;
