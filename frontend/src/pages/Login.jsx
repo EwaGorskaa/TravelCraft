@@ -44,9 +44,11 @@ function Login(){
             </form>
             <p className="font-text text-center m-4">
                 Nie masz konta? 
+                <Link to="/register">
                 <button className="mx-4" type="button">
                     Zarejestruj się
                 </button>
+                </Link>
             </p>
         </div>
         </div>
