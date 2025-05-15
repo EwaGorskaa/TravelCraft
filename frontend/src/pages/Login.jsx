@@ -36,7 +36,7 @@ function Login(){
                 <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 text-color5 bg-bgcolor2 shadow-sm placeholder-color5" onChange={handleChange} value={data.emailOrUsername}  placeholder="Email lub Login" name="emailOrUsername" required />
                 <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 text-color5 bg-bgcolor2 shadow-sm placeholder-color5" onChange={handleChange} value={data.password} type="password" placeholder="Hasło" name="password" required />
                 {error && 
-                <div className="error">
+                <div className="error px-4">
                     {error}
                 </div>}
                 <button type="submit" className="bgcolor3 text-white font-text py-2 m-4 rounded-lg hover:bg-opacity-80 transition duration-300">Zaloguj się</button>
