@@ -17,7 +17,7 @@ function Login(){
             const url = "http://localhost:3001/api/login"
             const { data: res } = await axios.post(url, data)
             localStorage.setItem("token", res.data)
-            window.location = "/"   
+            window.location = "/dashboard"   
         }
         catch (error){
             if(error.response && error.response.status >=400 && error.response.status <= 500){

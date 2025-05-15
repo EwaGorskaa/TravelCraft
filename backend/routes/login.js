@@ -16,15 +16,11 @@ router.post("/", async (req, res) => {
         )
 
         if(!user){
-            console.log("cos jest nie tak z loginem")
             return  res.status(401).send({ message: "Niepoprawne dane logowania"})
             
         }
-        console.log("req.body:", req.body);
-        console.log("user from DB:", user);
         const validPasswd = await bcrypt.compare(req.body.password, user.password)
         if(!validPasswd){
-             console.log("cos jest nie tak z haslem")
             return res.status(401).send({ message: "Niepoprawne dane logowania"})
         }
         const token = user.generateAuthToken();
