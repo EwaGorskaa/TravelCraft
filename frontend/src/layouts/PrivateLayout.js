@@ -7,7 +7,7 @@ function PrivateLayout(){
         <>
             <div className="min-h-screen flex flex-col">
                 <Navbar/>
-                <Outlet className="flex-1"/>
+                <Outlet className="flex-1" />
                 <Footer/>
             </div>
         </>

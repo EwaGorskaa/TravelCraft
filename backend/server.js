@@ -13,10 +13,11 @@ app.use(express.json());
 app.use(cors());
 
 //routes
+app.get("/api/users",tokenVerification)
 app.use('/api/login', authRoutes);
 app.use('/api/register', registerRoute)
-// app.use('/api/users', userRoutes);
-// app.use('/api/trips', tripRoutes);
+app.use('/api/user', userRoutes);
+//app.use('/api/trips', tripRoutes);
 
 require('./db')
 

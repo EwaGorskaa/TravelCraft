@@ -5,6 +5,7 @@ import Home from './pages/Homepage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import UserPanel from './pages/UserPanel';
+import Calendar from './pages/Calendar';
 import PrivateLayout from './layouts/PrivateLayout';
 import PublicLayout from './layouts/PublicLayout';
 
@@ -22,6 +23,7 @@ function App() {
 
             <Route element={user ? <PrivateLayout /> : <Navigate to="/login" />}>
               <Route path="/dashboard" element={<UserPanel />} />
+              <Route path="/calendar" element={<Calendar />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/" />} />

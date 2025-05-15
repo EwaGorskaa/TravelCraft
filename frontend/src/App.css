@@ -98,6 +98,19 @@ html, body, #root{
   color: #61dafb;
 }
 
+
+
+.calendar{
+  width: 80%;
+  overflow: auto;
+
+}
+
+.fc {
+  font-size: 12px;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
