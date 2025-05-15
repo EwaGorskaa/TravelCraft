@@ -28,7 +28,7 @@ function Login(){
 
     return (
         <div className="bg-gradient-to-br from-color4 via-color5 to-color5 w-full flex-1 flex flex-col items-center justify-center">
-        <h1 className="font5 color1 text-3xl text-center m-4">TravelCraft</h1>
+        <Link to="/"><h1 className="font5 color1 text-3xl text-center m-4">TravelCraft</h1></Link>
         <div className="login rounded-lg shadow-[0_10px_15px_rgba(0,0,0,0.3)] w-[420px] bg-color4 m-5 text-white p-4">
 
             <h2 className="font5 text-xl text-center m-4">Zaloguj się</h2>
