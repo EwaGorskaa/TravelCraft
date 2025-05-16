@@ -2,7 +2,7 @@ require("dotenv").config()
 const express = require('express');
 const cors = require('cors');
 const userRoutes = require('./routes/users');
-const tripRoutes = require('./routes/trips');
+const planRoutes = require('./routes/plans');
 const authRoutes = require('./routes/login');
 const registerRoute = require('./routes/register')
 const tokenVerification = require('./middleware/tokenVerification')
@@ -17,7 +17,7 @@ app.get("/api/users",tokenVerification)
 app.use('/api/login', authRoutes);
 app.use('/api/register', registerRoute)
 app.use('/api/user', userRoutes);
-//app.use('/api/trips', tripRoutes);
+//app.use('/api/plans', planRoutes);
 
 require('./db')
 
