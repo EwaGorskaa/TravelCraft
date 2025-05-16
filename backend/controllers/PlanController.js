@@ -1,4 +1,4 @@
-const { Plan } = require("../models/Plan")
+const Plan = require("../models/Plan")
 
 const getPlans = async (req, res) => {
     try{
@@ -12,7 +12,7 @@ const getPlans = async (req, res) => {
 
 const getPlan = async (req, res) => {
     try{
-        const plan = await Plan.find({planId: req.params.planId})
+        const plan = await Plan.findById(req.params.planId);
         if(!plan){
             return res.status(404).send({ message: "Nie znaleziono planu podróży :(" })
         }

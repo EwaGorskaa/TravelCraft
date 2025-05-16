@@ -17,7 +17,7 @@ app.get("/api/users",tokenVerification)
 app.use('/api/login', authRoutes);
 app.use('/api/register', registerRoute)
 app.use('/api/user', userRoutes);
-//app.use('/api/plans', planRoutes);
+app.use('/api/plans', planRoutes);
 
 require('./db')
 
