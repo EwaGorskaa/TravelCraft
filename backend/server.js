@@ -4,6 +4,7 @@ const cors = require('cors');
 const userRoutes = require('./routes/users');
 const planRoutes = require('./routes/plans');
 const authRoutes = require('./routes/login');
+const pinsRoutes = require('./routes/pins')
 const registerRoute = require('./routes/register')
 const tokenVerification = require('./middleware/tokenVerification')
 
@@ -18,7 +19,7 @@ app.use('/api/login', authRoutes);
 app.use('/api/register', registerRoute)
 app.use('/api/user', userRoutes);
 app.use('/api/plans', planRoutes);
-
+app.use('/api/pins', pinsRoutes)
 require('./db')
 
 const port = process.env.PORT || 3001
