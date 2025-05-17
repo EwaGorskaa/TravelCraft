@@ -5,9 +5,11 @@ import Footer from "../components/Footer";
 function PrivateLayout(){
     return(
         <>
-            <div className="min-h-screen flex flex-col">
+            <div className="min-h-screen flex flex-col bg-gradient-to-br from-color4 via-color5 to-color5">
                 <Navbar/>
-                <Outlet className="flex-1" />
+                <main className="flex-1">
+                    <Outlet />
+                </main>
                 <Footer/>
             </div>
         </>

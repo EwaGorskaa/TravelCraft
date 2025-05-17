@@ -57,7 +57,7 @@ function UserPanel(){
 
 
     return(
-        <div className="flex-1 mt-4 pt-4 bg-gradient-to-br from-color4 via-color5 to-color5">
+        <div className="mt-4 pt-4">
             <h1 className="color1 my-4 p-12 font-text text-xl">Witaj ponownie, { user.username }</h1>
             <div className="bgcolor5 m-4 px-10 py-4 rounded-lg shadow-[0_10px_15px_rgba(0,0,0,0.3)] ">
                 <div className="flex flex-row justify-between items-center mb-4 px-4 ">

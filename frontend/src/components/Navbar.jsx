@@ -13,7 +13,7 @@ function Navbar() {
         <ul className="flex space-x-7 font-text text-white curson-pointer">
           <button>Zaplanuj podróż</button>
           <button>Moje Plany</button>
-          <button>Mapa Podróży</button>
+          <Link to="/map"><button>Mapa Podróży</button></Link>
           <Link to="/calendar"><button>Kalendarz</button></Link>
           <button onClick={handleLogout}>Wyloguj się</button>
           </ul>
