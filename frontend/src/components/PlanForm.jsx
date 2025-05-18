@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { FiTrash } from "react-icons/fi";
 
 const PlanForm = ({ onSubmit }) => {
 
@@ -43,6 +43,13 @@ const PlanForm = ({ onSubmit }) => {
         setPlan({...plan, accommodations: updated});
     }
 
+    const handleDeleteAccommodation = (accToRemove) => {
+        setPlan((prev) => ({
+            ...prev,
+            accommodations: prev.accommodations.filter((_, index) => index != accToRemove),
+        }))
+    }
+
     return (
         <from onSubmit={handleSubmit} className="space-y-6 max-w-3xl mx-auto rounded-xl bgcolor4 p-10">
             <h2 className="text-color1 font5 text-3xl">Nowy Plan Podróży</h2>
@@ -63,6 +70,11 @@ const PlanForm = ({ onSubmit }) => {
                 {plan.accommodations.map((acc, index) => {
                     return(
                     <div key={index} className="p-4 mt-2 border rounded bgcolor5 space-y-2">
+                        <div className="flex justify-end py-4 px-2">
+                            <button onClick={() => handleDeleteAccommodation(index)} className=" hover:text-red-800" title="Usuń ten nocleg">
+                                <FiTrash className="w-5 h-5" />
+                            </button>
+                        </div>
                         <input name="name" placeholder="Nazwa" value={acc.name} onChange={(e) => handleAccommodationChange(index, e)} 
                         className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
                          <input name="location" placeholder="Lokalizacja" value={acc.location} onChange={(e) => handleAccommodationChange(index, e)} 
