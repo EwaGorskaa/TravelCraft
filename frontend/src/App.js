@@ -7,6 +7,7 @@ import Register from './pages/Register';
 import UserPanel from './pages/UserPanel';
 import Calendar from './pages/Calendar';
 import MapPage from './pages/MapPage';
+import AddPlan from './pages/AddPlan';
 import PrivateLayout from './layouts/PrivateLayout';
 import PublicLayout from './layouts/PublicLayout';
 
@@ -26,6 +27,7 @@ function App() {
               <Route path="/dashboard" element={<UserPanel />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/map" element={<MapPage/>}/>
+              <Route path="/newplan" element={<AddPlan/>}/>
             </Route>
 
             <Route path="*" element={<Navigate to="/" />} />
