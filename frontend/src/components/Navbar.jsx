@@ -11,7 +11,7 @@ function Navbar() {
       <div className=" mx-auto px-12 py-3 flex justify-between items-center">
         <Link to="/dashboard"><h1 className="text-2xl color5 font5">TravelCraft</h1></Link>
         <ul className="flex space-x-7 font-text text-white curson-pointer">
-          <button>Zaplanuj podróż</button>
+          <Link to="newplan"><button>Zaplanuj podróż</button></Link>
           <button>Moje Plany</button>
           <Link to="/map"><button>Mapa Podróży</button></Link>
           <Link to="/calendar"><button>Kalendarz</button></Link>
