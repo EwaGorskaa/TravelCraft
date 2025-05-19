@@ -32,11 +32,11 @@ function Register(){
 
             <h2 className="font5 text-xl text-center m-4">Utwórz konto</h2>
             <form className="max-w-md mx-auto flex flex-col" onSubmit={handleSubmit}>
-                <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 text-color5 bg-bgcolor2 shadow-sm placeholder-color5" 
+                <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 text-color4 bg-bgcolor2 shadow-sm placeholder-color5" 
                 onChange={handleChange} value={data.username}  placeholder="Nazwa Użytkownika" name="username" required />
-                <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 text-color5 bg-bgcolor2 shadow-sm placeholder-color5" 
+                <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 text-color4 bg-bgcolor2 shadow-sm placeholder-color5" 
                 onChange={handleChange} value={data.email}  placeholder="Adres Email" name="email" type="email" required />
-                <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 text-color5 bg-bgcolor2 shadow-sm placeholder-color5" 
+                <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 text-color4 bg-bgcolor2 shadow-sm placeholder-color5" 
                 onChange={handleChange} value={data.password} type="password" placeholder="Hasło" name="password" required />
                 
                 
