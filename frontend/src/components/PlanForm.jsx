@@ -82,10 +82,43 @@ const PlanForm = ({ onSubmit }) => {
         }))
     }
 
+    
+    const handleAddAttraction = () => {
+        setPlan((prev) => ({
+            ...prev,
+            attractions: [
+                ...prev.attractions,
+                {
+                    name: "",
+                    location: "", 
+                    startDate: "",
+                    endDate: "",
+                    duration: "",
+                    cost: 0,
+                    startTime: "",
+                    notes: "",
+                }
+            ]
+        }))
+    }
+
+    const handleAttractionChange = (index, e) => {
+        const updated = [...plan.attractions];
+        updated[index][e.target.name] = e.target.value;
+        setPlan({...plan, attractions: updated });
+    }
+
+    const handleDeleteAttraction = (atrToRemove) => {
+        setPlan((prev) => ({
+            ...prev,
+            attractions: prev.attractions.filter((_, index) => index != atrToRemove),   
+        }))
+    }
+
     return (
         <from onSubmit={handleSubmit} className="space-y-6 max-w-3xl mx-auto rounded-xl bgcolor4 p-10">
             <h2 className="text-color1 font5 text-3xl">Nowy Plan Podróży</h2>
-            <input name="title" type="text" placeholder="Tytuł" value={plan.value} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+            <input name="title" type="text" placeholder="Tytuł" value={plan.value} className="w-full border p-2 border-color5 rounded-md color1 focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
             <textarea name="description" placeholder="Opis" value={plan.description}  rows={5} className="w-full p-2 border border-color5 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"/>
             <input name="mainDestination" placeholder="Główna destynacja" value={plan.mainDestination} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
             <div className="flex gap-4">  
@@ -113,6 +146,7 @@ const PlanForm = ({ onSubmit }) => {
                         className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
                          <input name="nightCost" type="number" placeholder="Koszt za noc" value={acc.nightCost} onChange={(e) => handleAccommodationChange(index, e)} 
                         className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                        <h3 className="pt-4 font-text color1">Data zameldowania i wymeldowania</h3>
                         <div className="flex gap-4">  
                             <input name="startDate" type="date" value={acc.startDate} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
                             <input name="endDate" type="date" value={acc.endDate} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
@@ -121,7 +155,7 @@ const PlanForm = ({ onSubmit }) => {
                         className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"/>
                         <input name="checkOut" placeholder="Wymeldowanie" value={acc.checkOut} onChange={(e) => handleAccommodationChange(index, e)} 
                         className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"/>
-                          <textarea name="notes" placeholder="Notatki" value={acc.Notes} onChange={(e) => handleAccommodationChange(index, e)} className="w-full border p-1 rounded"/>
+                          <textarea name="notes" placeholder="Notatki" value={acc.notes} onChange={(e) => handleAccommodationChange(index, e)} className="w-full border p-1 rounded"/>
                     </div>
                     )
                 })} 
@@ -163,10 +197,38 @@ const PlanForm = ({ onSubmit }) => {
             <div>
                 <div className="flex justify-between items-center">
                     <h3 className="text-xl font5 color1">Atrakcje</h3>
-                    <button type="button" className="bgcolor5 color1 px-3 py-1 rounded">
+                    <button type="button" onClick={handleAddAttraction} className="bgcolor5 color1 px-3 py-1 rounded">
                         + Dodaj atrakcję
                     </button>
                 </div>
+                {plan.attractions.map((atr, index) => {
+                    return(
+                    <div key={index} className="p-4 mt-2 border rounded bgcolor5 space-y-2">
+                        <div className="flex justify-end py-4 px-2">
+                            <button onClick={() => handleDeleteAttraction(index)} className=" hover:text-red-800" title="Usuń ten nocleg">
+                                <FiTrash className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <input name="name" placeholder="Nazwa" value={atr.name} onChange={(e) => handleAttractionChange(index, e)} 
+                        className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                         <input name="location" placeholder="Lokalizacja" value={atr.location} onChange={(e) => handleAttractionChange(index, e)} 
+                        className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                         <input name="cost" type="number" placeholder="Koszt" value={atr.cost} onChange={(e) => handleAttractionChange(index, e)} 
+                        className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                        <h3 className="pt-4 font-text color1">Data rozpoczęcia i zakończenia</h3>
+                        <div className="flex gap-4">  
+                            <input name="startDate" type="date" value={atr.startDate} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                            <input name="endDate" type="date" value={atr.endDate} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                        </div>
+                        <div className="flex gap-4">  
+                            <input name="startTime" type="time" value={atr.startTime} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"/>
+                            <input name="duration" placeholder="Czas trwania" value={atr.duration} onChange={(e) => handleAttractionChange(index, e)} 
+                            className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"/>
+                        </div>
+                        <textarea name="notes" placeholder="Notatki" value={atr.notes} onChange={(e) => handleAccommodationChange(index, e)} className="w-full border p-1 rounded"/>
+                    </div>
+                    )
+                })} 
             </div>
             <div>
                 <div className="flex justify-between items-center">
