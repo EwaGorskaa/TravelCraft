@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FiTrash } from "react-icons/fi";
-
+import axios from "axios";
 const PlanForm = ({ onSubmit }) => {
 
     const [plan, setPlan] = useState({
@@ -13,9 +13,19 @@ const PlanForm = ({ onSubmit }) => {
         attractions: [],
         checklist: [],
     });
+    const [error, setError] = useState("")
 
-    const handleSubmit = (e) => {
-        console.log("test")
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try{
+            const url = "http://localhost:3001/api/plans"
+            const {plan: res} = await axios.post(url, plan)
+        }
+        catch(error){
+            if (error.response && error.response.status >= 400 && error.response.status <= 500) {
+                setError(error.response.data.message)
+            }
+        }
     }
 
     const handleAddAccommodation = () => {
@@ -115,15 +125,39 @@ const PlanForm = ({ onSubmit }) => {
         }))
     }
 
+    const handleAddChecklistItem = () => {
+        setPlan(prev => ({
+            ...prev,
+            checklist: [
+                ...prev.checklist,
+                { text: "", done: false }
+            ]
+        }));
+    };
+
+    const handleChecklistItemChange = (index, e) => {
+        const updated = [...plan.checklist];
+        updated[index].text = e.target.value;
+        setPlan({ ...plan, checklist: updated });
+    };
+
+    const handleDeleteChecklistItem = (indexToRemove) => {
+        setPlan(prev => ({
+            ...prev,
+            checklist: prev.checklist.filter((_, index) => index !== indexToRemove)
+        }));
+    };
+
+
     return (
-        <from onSubmit={handleSubmit} className="space-y-6 max-w-3xl mx-auto rounded-xl bgcolor4 p-10">
+        <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl mx-auto rounded-xl bgcolor4 p-10">
             <h2 className="text-color1 font5 text-3xl">Nowy Plan Podróży</h2>
-            <input name="title" type="text" placeholder="Tytuł" value={plan.value} className="w-full border p-2 border-color5 rounded-md color1 focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
-            <textarea name="description" placeholder="Opis" value={plan.description}  rows={5} className="w-full p-2 border border-color5 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"/>
-            <input name="mainDestination" placeholder="Główna destynacja" value={plan.mainDestination} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+            <input name="title" type="text" placeholder="Tytuł" value={plan.title}  onChange={(e) => setPlan({ ...plan, title: e.target.value })} className="w-full border p-2 border-color5 rounded-md color1 focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+            <textarea name="description" placeholder="Opis" value={plan.description} onChange={(e) => setPlan({ ...plan, description: e.target.value })} rows={5} className="w-full p-2 border border-color5 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"/>
+            <input name="mainDestination" placeholder="Główna destynacja" value={plan.mainDestination}  onChange={(e) => setPlan({ ...plan, mainDestination: e.target.value })} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
             <div className="flex gap-4">  
-                <input name="startDate" type="date" value={plan.startDate} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
-                <input name="endDate" type="date" value={plan.endDate} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                <input name="startDate" type="date" value={plan.startDate} onChange={(e) => setPlan({ ...plan, startDate: e.target.value })} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                <input name="endDate" type="date" value={plan.endDate} onChange={(e) => setPlan({ ...plan, endDate: e.target.value })} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
             </div>
             <div>
                 <div className="flex justify-between items-center">
@@ -181,7 +215,7 @@ const PlanForm = ({ onSubmit }) => {
                             className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
                             <h3 className="pt-4 font-text color1">Data i godzina odjazdu</h3> 
                             <div className="flex gap-4"> 
-                                <input name="date" type="date" value={tr.startDate} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                                <input name="date" type="date" value={tr.date} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
                                 <input name="time" type="time" value={tr.time} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
                             </div>
                             <input name="duration" placeholder="Czas podróży" value={tr.duration} onChange={(e) => handleTransportChange(index, e)} 
@@ -230,20 +264,39 @@ const PlanForm = ({ onSubmit }) => {
                     )
                 })} 
             </div>
-            <div>
-                <div className="flex justify-between items-center">
-                    <h3 className="text-xl font5 color1">Checklist</h3>
-                    <button type="button" className="bgcolor5 color1 px-3 py-1 rounded">
-                        + Dodaj element
-                    </button>
-                </div>
-            </div>
-            <div className="flex justify-center pt-10">
+           <div>
+    <div className="flex justify-between items-center">
+        <h3 className="text-xl font5 color1">Checklist</h3>
+        <button type="button" onClick={handleAddChecklistItem} className="bgcolor5 color1 px-3 py-1 rounded">
+            + Dodaj element
+        </button>
+    </div>
+    {plan.checklist.map((item, index) => (
+        <div key={index} className="flex items-center gap-2 mt-2 p-2  ">
+            <input
+                type="text"
+                value={item.text}
+                onChange={(e) => handleChecklistItemChange(index, e)}
+                placeholder={`Zadanie ${index + 1}`}
+                className="flex-1 border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"
+            />
+            <button
+                type="button"
+                onClick={() => handleDeleteChecklistItem(index)}
+                title="Usuń"
+            >
+                <FiTrash className="w-5 h-5" />
+            </button>
+        </div>
+    ))}
+</div>
+            <div className="flex flex-col justify-center pt-10">
+                {error && <div className="text-center font-text py-4 text-red-600">{error}</div>}
              <button type="submit" className="bgcolor1 text-white px-4 py-2 rounded">
                 Zapisz plan
             </button>
             </div>
-        </from>
+        </form>
     )
 }
 
