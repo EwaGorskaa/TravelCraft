@@ -1,11 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import axios from "axios";
+
 
 function CalendarPage() {
-  const [trips, setTrips] = useState([]);
+  const [plans, setPlans] = useState([]);
+
+
+  useEffect(() => {
+    const fetchPlans = async() => {
+      const token = localStorage.getItem("token")
+      if(token){
+        try{
+            const config = {
+                method: "GET",
+                url: "http://localhost:3001/api/plans/",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-access-token': token
+                }
+            }
+            const res = await axios(config);
+            const plansFromResponse = res.data.data;  
+
+        const formatted = plansFromResponse.map(plan => ({
+          id: plan._id,
+          title: plan.title,
+          start: plan.startDate,
+          end: new Date(new Date(plan.endDate).getTime() + 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+          allDay: true
+        }));
+        setPlans(formatted)
+      }
+    catch(error){
+      console.error("Błąd podczas pobierania planów:", error);
+    }
+  }
+  };
+  fetchPlans();
+  }, []);
+
 
   return (
     <div className="p-4">
@@ -14,7 +51,7 @@ function CalendarPage() {
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
-          trips={trips}
+          events={plans}
           selectable={true}
           editable={true}
           dateClick={(info) =>

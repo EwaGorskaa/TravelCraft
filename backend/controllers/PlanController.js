@@ -2,7 +2,7 @@ const Plan = require("../models/Plan")
 
 const getPlans = async (req, res) => {
     try{
-        const plans = await Plan.find({ userId: req.params.userId })
+        const plans = await Plan.find({ userId: req.user._id })
         res.status(200).send({ data: plans, message: "Pobrano plany podróży" })
     }
     catch(error){
