@@ -71,7 +71,7 @@ function UserPanel(){
             <div className="bgcolor5 m-4 px-10 py-4 rounded-lg shadow-[0_10px_15px_rgba(0,0,0,0.3)] ">
                 <div className="flex flex-row justify-between items-center mb-4 px-4 ">
                 <h1 className="color1  font-text text-lg text-bold">Nadchodzące Podróże</h1>
-                <Link to="/dashboard"><button className="bg-color1 text-white px-4 py-2 rounded hover:bg-color2 font-text">Zaplanuj kolejną podróż</button></Link>
+                <Link to="/newplan"><button className="bg-color1 text-white px-4 py-2 rounded hover:bg-color2 font-text">Zaplanuj kolejną podróż</button></Link>
                 </div>
                 {upcomingPlans.length === 0 ? (
                     <div className="text-center text-color1 py-8 italic font-text">Brak zaplanowanych podróży :(</div>

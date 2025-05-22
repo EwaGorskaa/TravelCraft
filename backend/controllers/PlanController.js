@@ -26,7 +26,7 @@ const getPlan = async (req, res) => {
 
 const addPlan = async (req, res) => {
     try{
-        const newPlan = new Plan(req.body);
+        const newPlan = new Plan({...req.body, userId: req.user._id });
         const savedPlan = await newPlan.save();
         res.status(201).send({ message: "Plan dodany pomyślnie :)" })
     }

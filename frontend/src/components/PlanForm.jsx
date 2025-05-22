@@ -18,8 +18,20 @@ const PlanForm = ({ onSubmit }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
-            const url = "http://localhost:3001/api/plans"
-            const {plan: res} = await axios.post(url, plan)
+            const token = localStorage.getItem("token")
+                            console.log("Token z localStorage:", token);
+                const config = {
+                    method: "POST",
+                    url: "http://localhost:3001/api/plans/",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-access-token': token
+                    },
+                    data: plan 
+                }
+                const {data:res} = await axios(config)
+
+
         }
         catch(error){
             if (error.response && error.response.status >= 400 && error.response.status <= 500) {
