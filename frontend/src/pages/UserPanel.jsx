@@ -36,8 +36,17 @@ function UserPanel(){
 
         const fetchPlans = async (userId) => {
             try{
-                const response = await axios.get(`http://localhost:3001/api/plans/${userId}`);
-                setPlans(response.data.data || []);
+                const token = localStorage.getItem("token")
+                const config = {
+                    method: "GET",
+                    url: "http://localhost:3001/api/plans/",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-access-token': token
+                    }
+                }
+                const {data:res} = await axios(config)
+                setPlans(res.data);
             }
             catch(error){
                 console.error("Błąd przy pobieraniu planów podróży użytkownika", error.message);
