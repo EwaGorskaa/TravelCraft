@@ -61,7 +61,7 @@ function UserPlans(){
             {plans.length === 0 ? (
                 <p className="text-center text-gray-500">Brak zaplanowanych podróży.</p>
             ) : (
-                <div>
+                <div className="px-24">
                     {plans.map(plan => (
                         <Plan key={plan._id} plan={plan} />
                     ))}
