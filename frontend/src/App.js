@@ -8,6 +8,7 @@ import UserPanel from './pages/UserPanel';
 import Calendar from './pages/Calendar';
 import MapPage from './pages/MapPage';
 import AddPlan from './pages/AddPlan';
+import UserPlans from './pages/UserPlans';
 import PrivateLayout from './layouts/PrivateLayout';
 import PublicLayout from './layouts/PublicLayout';
 
@@ -28,6 +29,7 @@ function App() {
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/map" element={<MapPage/>}/>
               <Route path="/newplan" element={<AddPlan/>}/>
+              <Route path="/myplans" element={<UserPlans/>}/>
             </Route>
 
             <Route path="*" element={<Navigate to="/" />} />
