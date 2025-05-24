@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import AccommodationList from "../components/AccomodationList";
 import TransportList from "../components/TransportList";
+import AttractionList from "../components/AttractionList";
 
 function Plan({plan}){
 
@@ -32,7 +33,7 @@ function Plan({plan}){
                     <p><strong>Opis:</strong> {plan.description}</p>
                     <AccommodationList accommodations={plan.accommodations} />
                     <TransportList transports={plan.transports}/>
-                    <p><strong>Atrakcje:</strong> {(plan.attractions || []).join(", ")}</p>
+                    <AttractionList attractions={plan.attractions}/>
                     <p><strong>Checklist:</strong> {plan.checklist.join(", ") || "brak"}</p>
                     <Link
                         to={`/plans/${plan._id}`}
