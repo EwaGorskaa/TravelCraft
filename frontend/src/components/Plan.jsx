@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import AccommodationList from "../components/AccomodationList";
+import TransportList from "../components/TransportList";
 
 function Plan({plan}){
 
@@ -30,7 +31,7 @@ function Plan({plan}){
                 <div className="mt-4 space-y-2 text-sm font-text text-gray-700">
                     <p><strong>Opis:</strong> {plan.description}</p>
                     <AccommodationList accommodations={plan.accommodations} />
-                    <p><strong>Transporty:</strong> {(plan.transports || []).join(", ")}</p>
+                    <TransportList transports={plan.transports}/>
                     <p><strong>Atrakcje:</strong> {(plan.attractions || []).join(", ")}</p>
                     <p><strong>Checklist:</strong> {plan.checklist.join(", ") || "brak"}</p>
                     <Link
