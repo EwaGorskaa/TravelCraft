@@ -1,12 +1,23 @@
 import {useState, useEffect} from "react"
 import axios from "axios"
-import { Link } from "react-router-dom"
+import { Link,  useLocation, useNavigate  } from "react-router-dom"
+import { toast } from "react-toastify"
 import Plan from "../components/Plan"
 
 function UserPlans(){
+    const location = useLocation();
+    const navigate = useNavigate();
     const [user, setUser] = useState({});
-    const [plans, setPlans] = useState([])
+    const [plans, setPlans] = useState([]);
 
+
+    useEffect(() =>{
+        if(location.state?.message){
+        toast(location.state.message);
+        navigate(location.pathname, { replace: true, state: {} });
+        }
+
+    }, [location.state, navigate])
 
     useEffect(() => {
         const fetchUser = async () => {

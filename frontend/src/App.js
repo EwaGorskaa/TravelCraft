@@ -1,5 +1,7 @@
 import React from 'react';
-import { Route, Routes, Router, Navigate } from "react-router-dom"
+import { Route, Routes, Router, Navigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import Home from './pages/Homepage';
 import Login from './pages/Login';
@@ -16,7 +18,7 @@ import PublicLayout from './layouts/PublicLayout';
 function App() {
   const user = localStorage.getItem("token")
   return (
-
+<>
           <Routes>
             <Route element={<PublicLayout />}>
               <Route path="/" element={<Home />} />
@@ -33,9 +35,17 @@ function App() {
             </Route>
 
             <Route path="*" element={<Navigate to="/" />} />
-
           </Routes>
-
+              <ToastContainer
+                position="top-center"
+                autoClose={3000}
+                hideProgressBar={true}
+                newestOnTop
+                closeOnClick
+                pauseOnHover
+                draggable
+            />
+</>
 
   );
 }

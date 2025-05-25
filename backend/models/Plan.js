@@ -16,11 +16,11 @@ const planSchema = new mongoose.Schema({
         trim: true
     },
     startDate: {
-        type: Date,
+        type: String,
         required: true
     }, 
     endDate: {
-        type: Date,
+        type: String,
         required: true
     },
     accomodations:[
@@ -38,11 +38,11 @@ const planSchema = new mongoose.Schema({
                 required: true,
             },
             startDate: {
-                type: Date,
+                type: String,
                 required: true,
             },
             endDate: {
-                type: Date,
+                type: String,
                 required: true,
             },
             checkIn: {
@@ -67,7 +67,7 @@ const planSchema = new mongoose.Schema({
                 required: true,
             },
             date: {
-                type: Date,
+                type: String,
                 required: true,
             },
             time:{

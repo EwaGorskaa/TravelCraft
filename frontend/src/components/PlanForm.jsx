@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FiTrash } from "react-icons/fi";
 import axios from "axios";
 const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [plan, setPlan] = useState(
         initialPlan ?? {
         title: "",
         description: "",
+        mainDestination: "",
         startDate: "",
         endDate: "",
         accommodations: [],
@@ -36,7 +38,7 @@ const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
             const token = localStorage.getItem("token")
                 const config = {
                     method: edit ? "PUT" : "POST",
-                    url: edit ? `http://localhost:3001/api/plans/${plan._id}` : "http://localohost:3001/api/plans/",
+                    url: edit ? `http://localhost:3001/api/plans/${plan._id}` : "http://localhost:3001/api/plans/",
                     headers: {
                         'Content-Type': 'application/json',
                         'x-access-token': token
@@ -44,7 +46,12 @@ const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
                     data: plan 
                 }
                 const {data:res} = await axios(config)
-
+                if(edit){
+                    navigate('/myplans', { state: { message: "Plan zaktualizowano pomyślnie!" } });
+                }
+                else{
+                    navigate('/myplans', { state: { message: "Plan dodano pomyślnie!" } });
+                }
 
         }
         catch(error){
@@ -98,7 +105,7 @@ const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
                     date: "", 
                     time: "",
                     duration: "",
-                    departureDate: "",
+                    departurePlace: "",
                     destination: "",
                 }
             ]
@@ -285,7 +292,7 @@ const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
                             <input name="duration" placeholder="Czas trwania" value={atr.duration} onChange={(e) => handleAttractionChange(index, e)} 
                             className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"/>
                         </div>
-                        <textarea name="notes" placeholder="Notatki" value={atr.notes} onChange={(e) => handleAccommodationChange(index, e)} className="w-full border p-1 rounded"/>
+                        <textarea name="notes" placeholder="Notatki" value={atr.notes} onChange={(e) => handleAttractionChange(index, e)} className="w-full border p-1 rounded"/>
                     </div>
                     )
                 })} 
@@ -319,7 +326,7 @@ const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
             <div className="flex flex-col justify-center pt-10">
                 {error && <div className="text-center font-text py-4 text-red-600">{error}</div>}
              <button type="submit" className="bgcolor1 text-white px-4 py-2 rounded">
-                Zapisz plan
+                {edit ? "Zaktualizuj" : "Dodaj"} plan
             </button>
             </div>
         </form>
