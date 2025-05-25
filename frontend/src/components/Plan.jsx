@@ -39,7 +39,7 @@ function Plan({plan}){
                         to={`/plans/${plan._id}`}
                         className="inline-block mt-2 text-color4 text-sm underline"
                     >
-                        Przejdź do szczegółów
+                        Edytuj szczegóły
                     </Link>
                 </div>
             )}

@@ -194,8 +194,8 @@ const PlanForm = ({ onSubmit }) => {
                         className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
                         <h3 className="pt-4 font-text color1">Data zameldowania i wymeldowania</h3>
                         <div className="flex gap-4">  
-                            <input name="startDate" type="date" value={acc.startDate} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
-                            <input name="endDate" type="date" value={acc.endDate} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                            <input name="startDate" type="date" value={acc.startDate} onChange={(e) => handleAccommodationChange(index, e)} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                            <input name="endDate" type="date" value={acc.endDate} onChange={(e) => handleAccommodationChange(index, e)} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
                         </div>
                         <input name="checkIn" placeholder="Zameldowanie" value={acc.checkIn} onChange={(e) => handleAccommodationChange(index, e)} 
                         className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"/>
@@ -227,8 +227,8 @@ const PlanForm = ({ onSubmit }) => {
                             className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
                             <h3 className="pt-4 font-text color1">Data i godzina odjazdu</h3> 
                             <div className="flex gap-4"> 
-                                <input name="date" type="date" value={tr.date} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
-                                <input name="time" type="time" value={tr.time} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                                <input name="date" type="date" value={tr.date} onChange={(e) => handleTransportChange(index, e)} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                                <input name="time" type="time" value={tr.time} onChange={(e) => handleTransportChange(index, e)} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
                             </div>
                             <input name="duration" placeholder="Czas podróży" value={tr.duration} onChange={(e) => handleTransportChange(index, e)} 
                             className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
@@ -263,11 +263,11 @@ const PlanForm = ({ onSubmit }) => {
                         className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
                         <h3 className="pt-4 font-text color1">Data rozpoczęcia i zakończenia</h3>
                         <div className="flex gap-4">  
-                            <input name="startDate" type="date" value={atr.startDate} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
-                            <input name="endDate" type="date" value={atr.endDate} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                            <input name="startDate" type="date" value={atr.startDate} onChange={(e) => handleAttractionChange(index, e)}  className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                            <input name="endDate" type="date" value={atr.endDate} onChange={(e) => handleAttractionChange(index, e)}  className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
                         </div>
                         <div className="flex gap-4">  
-                            <input name="startTime" type="time" value={atr.startTime} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"/>
+                            <input name="startTime" type="time" value={atr.startTime} onChange={(e) => handleAttractionChange(index, e)}  className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"/>
                             <input name="duration" placeholder="Czas trwania" value={atr.duration} onChange={(e) => handleAttractionChange(index, e)} 
                             className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"/>
                         </div>
