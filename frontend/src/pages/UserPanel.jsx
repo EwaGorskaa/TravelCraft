@@ -6,7 +6,8 @@ function UserPanel(){
     const [user, setUser] = useState({});
     const [plans, setPlans] = useState([]);
     const [upcomingPlans, setUpcomingPlans] = useState([]);
-
+    const [selectedPlan, setSelectedPlan] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -78,12 +79,65 @@ function UserPanel(){
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
                         {upcomingPlans.map(plan => (
-                            <PlanCard key={plan._id} plan={plan}/>
+                            <PlanCard key={plan._id} plan={plan} onDetailsClick={() => {
+                                setSelectedPlan(plan)
+                                setIsModalOpen(true)}}/>
                         ))}
+                        {isModalOpen && selectedPlan && (
+                        <div className="fixed inset-0 font-text bg-black bg-opacity-50 flex items-center justify-center z-50">
+                            <div className="bg-white rounded-lg p-6 max-w-xl w-full shadow-xl relative">
+                            <button 
+                                onClick={() => setIsModalOpen(false)}
+                                className="absolute top-2 right-2 text-gray-500 hover:text-black text-xl"
+                            >
+                                ×
+                            </button>
+                            <h2 className="text-2xl font-bold font5 color1 mb-4">{selectedPlan.title}</h2>
+                            <p><span className="font-semibold">Cel podróży:</span> {selectedPlan.mainDestination}</p>
+                            <p><span className="font-semibold">Data:</span> {new Date(selectedPlan.startDate).toLocaleDateString()} - {new Date(selectedPlan.endDate).toLocaleDateString()}</p>
+
+                            {selectedPlan.accommodations?.length > 0 && (
+                                <>
+                                <h3 className="font-bold mt-4">Noclegi:</h3>
+                                <ul className="list-disc pl-6 list-none">
+                                    {selectedPlan.accommodations.map((a, i) => (
+                                    <li key={i}>{a.name}, {a.location}, {new Date(a.startDate).toLocaleDateString()} - {new Date(a.endDate).toLocaleDateString()}</li>
+                                    ))}
+                                </ul>
+                                </>
+                            )}
+
+                            {selectedPlan.transports?.length > 0 && (
+                                <>
+                                <h3 className="font-bold mt-4">Transport:</h3>
+                                <ul className="list-disc pl-6 list-none">
+                                    {selectedPlan.transports.map((t, i) => (
+                                    <li key={i}>{t.type}: {t.departurePlace} → {t.destination}, dnia {new Date(t.date).toLocaleDateString()} {t.time}</li>
+                                    ))}
+                                </ul>
+                                </>
+                            )}
+
+                            {selectedPlan.attractions?.length > 0 && (
+                                <>
+                                <h3 className="font-bold mt-4">Atrakcje:</h3>
+                                <ul className="list-disc pl-6 list-none">
+                                    {selectedPlan.attractions.map((a, i) => (
+                                    <li key={i}>{a.name} ({a.location}), {new Date(a.startDate).toLocaleDateString()} - {new Date(a.endDate).toLocaleDateString()}</li>
+                                    ))}
+                                </ul>
+                                </>
+                            )}
+                            </div>
+                        </div>
+                        )}
+
                     </div>
+
                 )}
             </div>
         </div>
+        
     )
 }
 
