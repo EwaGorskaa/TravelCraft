@@ -36,7 +36,8 @@ function Plan({plan}){
                     <AttractionList attractions={plan.attractions}/>
                     <p><strong>Checklist:</strong> {plan.checklist.join(", ") || "brak"}</p>
                     <Link
-                        to={`/plans/${plan._id}`}
+                        to={"/newplan"}
+                        state={{ plan }}
                         className="inline-block mt-2 text-color4 text-sm underline"
                     >
                         Edytuj szczegóły

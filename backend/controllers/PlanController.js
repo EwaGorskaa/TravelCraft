@@ -43,7 +43,7 @@ const updatePlan = async (req, res) => {
         if(!updatedPlan){
             return res.status(404).send({ message: "Nie znaleziono planu" })
         }
-        res.status(201).send({ message: "Plan zaktualizowany pomyślnie :)" })
+        res.status(200).send({ message: "Plan zaktualizowany pomyślnie :)" })
     }
     catch(error){
         res.status(500).send({ message: error.message  })

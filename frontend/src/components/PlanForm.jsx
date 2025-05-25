@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { FiTrash } from "react-icons/fi";
 import axios from "axios";
-const PlanForm = ({ onSubmit }) => {
-
-    const [plan, setPlan] = useState({
+const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
+    const location = useLocation();
+    const [plan, setPlan] = useState(
+        initialPlan ?? {
         title: "",
         description: "",
         startDate: "",
@@ -13,16 +15,28 @@ const PlanForm = ({ onSubmit }) => {
         attractions: [],
         checklist: [],
     });
+
+    useEffect(() => {
+        if(initialPlan) {
+            setPlan({
+                ...initialPlan,
+                accommodations: initialPlan.accommodations ?? [],
+                transports: initialPlan.transports ?? [],
+                attractions: initialPlan.attractions ?? [],
+                checklist: initialPlan.checklist ?? [],         
+            });
+        }
+    }, [initialPlan]);
+
     const [error, setError] = useState("")
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
             const token = localStorage.getItem("token")
-                            console.log("Token z localStorage:", token);
                 const config = {
-                    method: "POST",
-                    url: "http://localhost:3001/api/plans/",
+                    method: edit ? "PUT" : "POST",
+                    url: edit ? `http://localhost:3001/api/plans/${plan._id}` : "http://localohost:3001/api/plans/",
                     headers: {
                         'Content-Type': 'application/json',
                         'x-access-token': token
@@ -163,7 +177,7 @@ const PlanForm = ({ onSubmit }) => {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl mx-auto rounded-xl bgcolor4 p-10">
-            <h2 className="text-color1 font5 text-3xl">Nowy Plan Podróży</h2>
+            <h2 className="text-color1 font5 text-3xl">{edit ? "Edytuj Plan" : "Nowy Plan Podróży" }</h2>
             <input name="title" type="text" placeholder="Tytuł" value={plan.title}  onChange={(e) => setPlan({ ...plan, title: e.target.value })} className="w-full border p-2 border-color5 rounded-md color1 focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
             <textarea name="description" placeholder="Opis" value={plan.description} onChange={(e) => setPlan({ ...plan, description: e.target.value })} rows={5} className="w-full p-2 border border-color5 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"/>
             <input name="mainDestination" placeholder="Główna destynacja" value={plan.mainDestination}  onChange={(e) => setPlan({ ...plan, mainDestination: e.target.value })} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
@@ -178,7 +192,7 @@ const PlanForm = ({ onSubmit }) => {
                         + Dodaj nocleg
                     </button>
                 </div>
-                {plan.accommodations.map((acc, index) => {
+                {(plan.accommodations ?? []).map((acc, index) => {
                     return(
                     <div key={index} className="p-4 mt-2 border rounded bgcolor5 space-y-2">
                         <div className="flex justify-end py-4 px-2">
@@ -213,7 +227,7 @@ const PlanForm = ({ onSubmit }) => {
                         + Dodaj transport
                     </button>
                 </div>
-                {plan.transports.map((tr, index) => {
+                {(plan.transports ?? []).map((tr, index) => {
                     return (
                         <div key={index} className="p-4 mt-2 border rounded bgcolor5 space-y-2">
                             <div className="flex justify-end py-4 px-2">
@@ -247,7 +261,7 @@ const PlanForm = ({ onSubmit }) => {
                         + Dodaj atrakcję
                     </button>
                 </div>
-                {plan.attractions.map((atr, index) => {
+                {(plan.attractions ?? []).map((atr, index) => {
                     return(
                     <div key={index} className="p-4 mt-2 border rounded bgcolor5 space-y-2">
                         <div className="flex justify-end py-4 px-2">
