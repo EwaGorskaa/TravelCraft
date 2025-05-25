@@ -6,6 +6,7 @@ import axios from "axios"
 function Login(){
     const [error, setError] = useState("")
     const [data, setData] = useState({ emailOrUsername: "", password: "" })
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const handleChange = ({ currentTarget: input }) => {
         setData({ ...data, [input.name]: input.value })
@@ -13,6 +14,7 @@ function Login(){
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setIsSubmitting(true)
         try{
             const url = "http://localhost:3001/api/login"
             const { data: res } = await axios.post(url, data)
@@ -23,6 +25,9 @@ function Login(){
             if(error.response && error.response.status >=400 && error.response.status <= 500){
                 setError(error.response.data.message)
             }
+        }
+        finally{
+            setIsSubmitting(false)
         }
     }
 
@@ -39,8 +44,19 @@ function Login(){
                 <div className="error px-4">
                     {error}
                 </div>}
-                <button type="submit" className="bgcolor3 text-white font-text py-2 m-4 rounded-lg hover:bg-opacity-80 transition duration-300">Zaloguj się</button>
-
+                <button type="submit" className={`bgcolor3 text-white font-text py-2 m-4 rounded-lg flex items-center justify-center gap-2 transition duration-300 ${
+                isSubmitting ? 'cursor-not-allowed' : 'hover:bg-color1' }`} disabled={isSubmitting}>
+                {isSubmitting ? (
+                    <>
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
+                    </svg>
+                    Logowanie...
+                    </>
+                ) : ( 'Zaloguj się'
+ )}
+                </button>
             </form>
             <p className="font-text text-center m-4">
                 Nie masz konta? 

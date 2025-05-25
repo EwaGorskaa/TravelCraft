@@ -6,6 +6,7 @@ import axios from "axios"
 function Register(){
     const [error, setError] = useState("")
     const [data, setData] = useState({username: "", email: "", password: ""})
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const navigate = useNavigate()
     const handleChange = ({ currentTarget: input }) => {
         setData({ ...data, [input.name]: input.value})
@@ -13,6 +14,7 @@ function Register(){
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setIsSubmitting(true)
         try{
             const url = "http://localhost:3001/api/register"
             const { data: res } = await axios.post(url, data)
@@ -22,6 +24,9 @@ function Register(){
             if(error.response && error.response.status >= 400 && error.response.status <= 500){
                 setError(error.response.data.message)
             }
+        }
+        finally{
+            setIsSubmitting(false)
         }
     }
 
@@ -41,11 +46,21 @@ function Register(){
                 
                 
                 {error && 
-                <div className="error">
+                <div className="error px-4">
                     {error}
                 </div>}
-                <button type="submit" className="bgcolor4 text-white font-text py-2 m-4 rounded-lg hover:bg-opacity-80 transition duration-300">Utwórz konto</button>
-
+                <button type="submit" className={`bgcolor4 text-white font-text py-2 m-4 rounded-lg flex items-center justify-center gap-2 transition duration-300 ${
+                isSubmitting ? 'cursor-not-allowed' : 'hover:bg-color5 hover:text-color4' }`} disabled={isSubmitting}>
+                {isSubmitting ? (
+                    <>
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
+                    </svg>
+                    Rejestracja...
+                    </>
+                ) : ( 'Utwórz konto' )}
+                </button>
             </form>
             <p className="font-text text-center m-4">
                 Masz już konto?

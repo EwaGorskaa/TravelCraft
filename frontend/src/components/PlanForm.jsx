@@ -5,6 +5,7 @@ import axios from "axios";
 const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
     const location = useLocation();
     const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const [plan, setPlan] = useState(
         initialPlan ?? {
         title: "",
@@ -34,6 +35,7 @@ const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
         try{
             const token = localStorage.getItem("token")
                 const config = {
@@ -47,7 +49,7 @@ const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
                 }
                 const {data:res} = await axios(config)
                 if(edit){
-                    navigate('/myplans', { state: { message: "Plan zaktualizowano pomyślnie!" } });
+                    navigate('/myplans', { state: { message: "Plan zaktualizowano pomyślnie!" } }); 
                 }
                 else{
                     navigate('/myplans', { state: { message: "Plan dodano pomyślnie!" } });
@@ -58,6 +60,9 @@ const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
             if (error.response && error.response.status >= 400 && error.response.status <= 500) {
                 setError(error.response.data.message)
             }
+        }
+        finally{
+            setIsSubmitting(false);
         }
     }
 
@@ -325,9 +330,40 @@ const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
 </div>
             <div className="flex flex-col justify-center pt-10">
                 {error && <div className="text-center font-text py-4 text-red-600">{error}</div>}
-             <button type="submit" className="bgcolor1 text-white px-4 py-2 rounded">
-                {edit ? "Zaktualizuj" : "Dodaj"} plan
-            </button>
+<button
+        type="submit"
+        disabled={isSubmitting}
+        className={`bgcolor1 text-white font-text px-4 py-2 rounded transition duration-300 flex items-center justify-center gap-2 ${
+            isSubmitting ? "cursor-not-allowed" : "hover:bg-color3" }`}
+    >
+        {isSubmitting ? (
+            <>
+                <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                >
+                    <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                    />
+                    <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                    />
+                </svg>
+                Przetwarzanie...
+            </>
+        ) : (
+            `${edit ? "Zaktualizuj" : "Dodaj"} plan`
+        )}
+    </button>
             </div>
         </form>
     )
