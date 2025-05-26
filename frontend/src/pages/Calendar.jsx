@@ -3,12 +3,13 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import PlanModal from "../components/PlanModal";
 import axios from "axios";
 
 
 function CalendarPage() {
   const [plans, setPlans] = useState([]);
-
+  const [selectedPlan, setSelectedPlan] = useState(null);
 
   useEffect(() => {
     const fetchPlans = async() => {
@@ -25,11 +26,14 @@ function CalendarPage() {
             }
             const res = await axios(config);
             const plansFromResponse = res.data.data;  
-
-        const formatted = plansFromResponse.map(plan => ({
+            const colors = ["#A8D5BA", "#FFD6A5", "#FFABAB", "#D7E3FC", "#E2F0CB", "#FFC8DD", "#B5EAD7", "#CBAACB", "#FFDAC1", "#D0F4DE",];
+        const formatted = plansFromResponse.map((plan, i) => ({
           id: plan._id,
           title: plan.title,
           start: plan.startDate,
+          backgroundColor: colors[i % colors.length],
+          borderColor: colors[i % colors.length],
+          extendedProps: { ...plan },
           end: new Date(new Date(plan.endDate).getTime() + 24 * 60 * 60 * 1000).toISOString().split("T")[0],
           allDay: true
         }));
@@ -55,9 +59,19 @@ function CalendarPage() {
           selectable={true}
           editable={true}
           dateClick={(info) =>
-            alert(`Kliknięto na datę: ${info.dateStr}`)
-          }
+            alert(`Kliknięto na datę: ${info.dateStr}`)}
+          eventClick={(info) =>{
+            const selectedPlan = info.event.extendedProps;
+            setSelectedPlan(selectedPlan)
+          }}
+          
         />
+         {selectedPlan && (
+        <PlanModal
+          plan={selectedPlan}
+          onClose={() => setSelectedPlan(null)}
+        />
+      )}
       </div>
     </div>
   );
