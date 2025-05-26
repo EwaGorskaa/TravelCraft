@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AccommodationList from "../components/AccomodationList";
 import TransportList from "../components/TransportList";
 import AttractionList from "../components/AttractionList";
 
-function Plan({plan}){
-
-
+function Plan({plan, onDelete}){
+    const navigate = useNavigate();
     const [expanded, setExpanded] = useState(false);
+    const [error, setError] = useState(null)
     const formatDate = (isoDate) => {
         const date = new Date(isoDate);
         return date.toLocaleDateString("pl-PL");
@@ -35,6 +35,8 @@ function Plan({plan}){
                     <TransportList transports={plan.transports}/>
                     <AttractionList attractions={plan.attractions}/>
                     <p><strong>Checklist:</strong> {plan.checklist.join(", ") || "brak"}</p>
+                    <div className="flex flex-col justify-center pt-10">
+                    {error && <div className="text-center font-text py-4 text-red-600">{error}</div>}</div>
                     <Link
                         to={"/newplan"}
                         state={{ plan }}
@@ -42,6 +44,9 @@ function Plan({plan}){
                     >
                         Edytuj szczegóły
                     </Link>
+                    <button type="button" onClick={() => onDelete(plan._id)} className="bg-red-700 text-white font-text py-1 px-2 m-4 rounded-md">
+                        Usuń plan
+                    </button>
                 </div>
             )}
         </div>
