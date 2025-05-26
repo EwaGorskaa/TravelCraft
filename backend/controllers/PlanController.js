@@ -1,4 +1,5 @@
 const Plan = require("../models/Plan")
+const Pin = require("../models/Pin")
 
 const getPlans = async (req, res) => {
     try{
@@ -28,6 +29,22 @@ const addPlan = async (req, res) => {
     try{
         const newPlan = new Plan({...req.body, userId: req.user._id });
         const savedPlan = await newPlan.save();
+
+        const coords = await fetchCoordinates(savedPlan.mainDestination);
+        if (coords && !isNaN(coords.lat) && !isNaN(coords.lng)) {
+            const now = new Date();
+            const type = new Date(savedPlan.startDate) < now ? "Visited" : "Upcoming";
+
+            const newPin = new Pin ({
+                userId: req.user._id,
+               title: savedPlan.mainDestination,
+               type: type,
+               lat: coords.lat,
+               lng: coords.lng
+            })
+            await newPin.save();
+        }
+        
         res.status(201).send({ message: "Plan dodany pomyślnie :)" })
     }
     catch(error){
@@ -63,5 +80,16 @@ const deletePlan = async (req, res) => {
     }
 }
 
+
+const fetchCoordinates = async (locationName) =>{
+    const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(locationName)}`);
+    const data  = await response.json();
+
+    if(data && data.length > 0) {
+        const {lat, lng} = data[0];
+        return {lat: parseFloat(lat), lng: parseFloat(lng)}
+    }
+    return null
+}
 
 module.exports = {getPlans, getPlan, addPlan, updatePlan, deletePlan}
