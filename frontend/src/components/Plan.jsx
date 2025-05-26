@@ -4,21 +4,40 @@ import { Link, useNavigate } from "react-router-dom";
 import AccommodationList from "../components/AccomodationList";
 import TransportList from "../components/TransportList";
 import AttractionList from "../components/AttractionList";
+import { FaCheckCircle, FaClock, FaPlaneDeparture } from "react-icons/fa";
 
 function Plan({plan, onDelete}){
     const navigate = useNavigate();
     const [expanded, setExpanded] = useState(false);
     const [error, setError] = useState(null)
+
     const formatDate = (isoDate) => {
         const date = new Date(isoDate);
         return date.toLocaleDateString("pl-PL");
     };
 
+    const getStatus = () => {
+        const now = new Date();
+        const start = new Date(plan.startDate);
+        const end = new Date(plan.endDate);
+
+        if(end < now) return {label: "Zakończony", icon: <FaCheckCircle className="text-green-600 ml-2"/>};
+        if(start > now) return {label: "Nadchodzący", icon: <FaPlaneDeparture className="text-blue-500 ml-2"/>}
+        return {label: "W trakcie", icon: <FaClock className="text-yellow-500 ml-2"/>}
+    }
+
+    const status = getStatus();
+
     return (
            <div className="bg-white rounded-2xl shadow-md p-4 mb-4 border border-gray-200">
             <div className="flex justify-between items-center">
                 <div>
-                    <h2 className="text-xl font-text font-bold text-color2">{plan.title}</h2>
+                    <div className="flex items-center space-x-2">
+                    <h2 className="text-xl font-text font-bold text-color2">{plan.title} </h2>
+                                            <span className="ml-2 italic text-sm font-normal font-italic text-gray-600 flex items-center">
+                            ({status.label}) {status.icon}
+                        </span>
+                        </div>
                     <p className="text-sm text-gray-500"> {formatDate(plan.startDate)} - {formatDate(plan.endDate)}</p>
                 </div>
                 <button
