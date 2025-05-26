@@ -16,7 +16,7 @@ function Register(){
         e.preventDefault()
         setIsSubmitting(true)
         try{
-            const url = "http://localhost:3001/api/register"
+            const url = "http://localhost:3001/api/auth/register"
             const { data: res } = await axios.post(url, data)
             navigate("/login")
         }
