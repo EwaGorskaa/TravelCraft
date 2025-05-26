@@ -22,7 +22,7 @@ const getPins = async (req, res) => {
 
 const addPin = async (req, res) => {
     try{
-        const newPin = new Pin(req.body);
+        const newPin = new Pin({ userId: req.user._id, ...req.body});
         const savedPin = await newPin.save();
         res.status(201).send({ message: "Pinezka dodana pomyślnie :) ", data: savedPin});
     }

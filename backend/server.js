@@ -4,7 +4,7 @@ const cors = require('cors');
 const userRoutes = require('./routes/users');
 const planRoutes = require('./routes/plans');
 const authRoutes = require('./routes/login');
-const pinsRoutes = require('./routes/pins')
+const pinsRoutes = require('./routes/pins');
 const registerRoute = require('./routes/register')
 const tokenVerification = require('./middleware/tokenVerification')
 
