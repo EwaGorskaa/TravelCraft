@@ -31,7 +31,8 @@ function UserPanel(){
             }
             catch(error){
                 if(error.response && error.response.status >= 400 && error.response.status <=500){
-                    console.log("cos poszlo nie tak z getUser")
+                    localStorage.removeItem("token");
+                    window.location.reload();
                 }
             }
         };
@@ -53,6 +54,8 @@ function UserPanel(){
             }
             catch(error){
                 console.error("Błąd przy pobieraniu planów podróży użytkownika", error.message);
+                    //localStorage.removeItem("token");
+                    //window.location.reload();
             }
         };
 

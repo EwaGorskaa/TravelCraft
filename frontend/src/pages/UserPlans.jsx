@@ -22,25 +22,29 @@ function UserPlans(){
 
     useEffect(() => {
         const fetchUser = async () => {
-            try{
-                const token = localStorage.getItem("token")
-                const config = {
-                    method: "GET",
-                    url: "http://localhost:3001/api/user/",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-access-token': token
+            const token = localStorage.getItem("token")
+            if(token){
+                try{
+                    const config = {
+                        method: "GET",
+                        url: "http://localhost:3001/api/user/",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-access-token': token
+                        }
+                    }
+                    const {data:res} = await axios(config)
+                    setUser(res.data);
+                    if(res.data._id){
+                        fetchPlans(res.data._id)
                     }
                 }
-                const {data:res} = await axios(config)
-                setUser(res.data);
-                if(res.data._id){
-                    fetchPlans(res.data._id)
-                }
-            }
-            catch(error){
-                if(error.response && error.response.status >= 400 && error.response.status <=500){
-                    console.log("cos poszlo nie tak z getUser")
+                catch(error){
+                    if(error.response && error.response.status >= 400 && error.response.status <=500){
+                        localStorage.removeItem("token");
+                        window.location.reload();
+                        console.log(error.message);
+                    } 
                 }
             }
         };

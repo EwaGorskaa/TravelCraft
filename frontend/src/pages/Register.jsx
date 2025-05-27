@@ -45,10 +45,14 @@ function Register(){
                 onChange={handleChange} value={data.password} type="password" placeholder="Hasło" name="password" required />
                 
                 
-                {error && 
-                <div className="error px-4">
-                    {error}
-                </div>}
+{error && (
+  <div className="bg-red-100 text-red-700 border border-red-400 px-4 py-2 rounded-md mx-4 mt-2 text-sm flex items-center gap-2 shadow-sm">
+    <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-11.707a1 1 0 10-1.414 1.414L9.586 10l-.293.293a1 1 0 101.414 1.414L11.414 10l.293-.293a1 1 0 00-1.414-1.414z" clipRule="evenodd" />
+    </svg>
+    <span>{error}</span>
+  </div>
+)}
                 <button type="submit" className={`bgcolor4 text-white font-text py-2 m-4 rounded-lg flex items-center justify-center gap-2 transition duration-300 ${
                 isSubmitting ? 'cursor-not-allowed' : 'hover:bg-color5 hover:text-color4' }`} disabled={isSubmitting}>
                 {isSubmitting ? (

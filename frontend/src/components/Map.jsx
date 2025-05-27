@@ -39,17 +39,32 @@ const createMarker = (color) => {
 
 
 useEffect(() => {
+  const fetchPins = async () => {
   const token = localStorage.getItem("token");
   if (token) {
-    axios.get("http://localhost:3001/api/pins", {
-      headers: { 'x-access-token': token }
-    })
-    .then(res => {
-      console.log("Pobrane pinezki:", res.data.data);
-      setPins(res.data.data);
-    })
-    .catch(err => console.error("Błąd przy pobieraniu pinezek:", err));
+    try { 
+      const config = {
+      method: "GET",
+      url: "http://localhost:3001/api/pins/",
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': token
+      }
+    }
+    const res = await axios(config);
+    console.log("Pobrane pinezki:", res.data.data);
+    setPins(res.data.data);
+    }
+    catch(error){
+      console.error("Błąd przy pobieraniu pinezek:", error);
+      if (error.response && error.response.status === 401) {
+        localStorage.removeItem("token");
+        window.location.reload();
+      }
+    }
   }
+};
+fetchPins();
 }, []);
 
 
@@ -74,7 +89,7 @@ useEffect(() => {
       }
     }
     catch(error){
-  console.error("Błąd przy dodawaniu pinezki:", error);
+      console.error("Błąd przy dodawaniu pinezki:", error);
     } 
   }
 

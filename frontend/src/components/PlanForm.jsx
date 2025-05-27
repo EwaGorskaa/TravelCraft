@@ -59,6 +59,8 @@ const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
         catch(error){
             if (error.response && error.response.status >= 400 && error.response.status <= 500) {
                 setError(error.response.data.message)
+                localStorage.removeItem("token");
+                window.location.reload();
             }
         }
         finally{

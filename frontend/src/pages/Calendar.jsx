@@ -39,10 +39,20 @@ function CalendarPage() {
         }));
         setPlans(formatted)
       }
-    catch(error){
-      console.error("Błąd podczas pobierania planów:", error);
+      catch(error){
+        console.error("Błąd podczas pobierania planów:", error);
+          if (error.response && error.response.status === 401) {
+            localStorage.removeItem("token");
+            window.location.reload();
+          }
+      }
     }
-  }
+    else{
+      console.error("Brak tokenu!")
+      localStorage.removeItem("token");
+      window.location.reload();
+      return;
+    }
   };
   fetchPlans();
   }, []);
