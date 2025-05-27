@@ -10,7 +10,7 @@ const handleValidationErrors = (req, res, next) => {
         errors.array().forEach(error => {
             errorMessages[error.path] = error.msg;
         })
-        return res.status(400).send({message: "Błąd walidacji: ", errors: errorMessages}); 
+        return res.status(400).send({message: errorMessages}); 
     }
     next();
 }

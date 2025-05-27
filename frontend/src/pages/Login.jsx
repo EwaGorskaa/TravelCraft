@@ -4,17 +4,23 @@ import axios from "axios"
 
 
 function Login(){
-    const [error, setError] = useState("")
+
     const [data, setData] = useState({ emailOrUsername: "", password: "" })
+    const [fieldErrors, setFieldErrors] = useState({});
+    const [generalError, setGeneralError] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     const handleChange = ({ currentTarget: input }) => {
         setData({ ...data, [input.name]: input.value })
+        setFieldErrors({ ...fieldErrors, [input.name]: "" });
+        setGeneralError("");
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         setIsSubmitting(true)
+        setFieldErrors({});
+        setGeneralError("");
         try{
             const url = "http://localhost:3001/api/auth/login"
             const { data: res } = await axios.post(url, data)
@@ -22,8 +28,12 @@ function Login(){
             window.location = "/dashboard"   
         }
         catch (error){
-            if(error.response && error.response.status >=400 && error.response.status <= 500){
-                setError(error.response.data.message)
+            if(error.response){
+                if(typeof error.response.data.message === "object")
+                     setFieldErrors(error.response.data.message);
+                else{
+                    setGeneralError(error.response.data.message);
+                }
             }
         }
         finally{
@@ -38,12 +48,16 @@ function Login(){
 
             <h2 className="font5 text-xl text-center m-4">Zaloguj się</h2>
             <form className="max-w-md mx-auto flex flex-col" onSubmit={handleSubmit}>
-                <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5 color4" onChange={handleChange} value={data.emailOrUsername}  placeholder="Email lub Login" name="emailOrUsername" required />
-                <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5 color4" onChange={handleChange} value={data.password} type="password" placeholder="Hasło" name="password" required />
-                {error && 
-                <div className="error px-4">
-                    {error}
-                </div>}
+                <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5 color4" onChange={handleChange} value={data.emailOrUsername}  placeholder="Email lub Login" name="emailOrUsername"  />
+                {fieldErrors.emailOrUsername &&
+                    <div className="error px-4">
+                        {fieldErrors.emailOrUsername}
+                    </div>}
+                <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5 color4" onChange={handleChange} value={data.password} type="password" placeholder="Hasło" name="password"  />
+                {fieldErrors.password &&
+                    <div className="error px-4">
+                        {fieldErrors.password}
+                    </div>}
                 <button type="submit" className={`bgcolor3 text-white font-text py-2 m-4 rounded-lg flex items-center justify-center gap-2 transition duration-300 ${
                 isSubmitting ? 'cursor-not-allowed' : 'hover:bg-color1' }`} disabled={isSubmitting}>
                 {isSubmitting ? (
@@ -57,6 +71,10 @@ function Login(){
                 ) : ( 'Zaloguj się'
  )}
                 </button>
+                {generalError &&
+                    <div className="error text-center mt-2">
+                        {generalError}
+                    </div>}
             </form>
             <p className="font-text text-center m-4">
                 Nie masz konta? 

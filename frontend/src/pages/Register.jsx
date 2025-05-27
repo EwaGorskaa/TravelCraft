@@ -6,10 +6,12 @@ import axios from "axios"
 function Register(){
     const [error, setError] = useState("")
     const [data, setData] = useState({username: "", email: "", password: ""})
+    const [fieldErrors, setFieldErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false)
     const navigate = useNavigate()
     const handleChange = ({ currentTarget: input }) => {
         setData({ ...data, [input.name]: input.value})
+        setFieldErrors(prev => ({ ...prev, [input.name]: undefined }));
     }
 
     const handleSubmit = async (e) => {
@@ -22,7 +24,12 @@ function Register(){
         }
         catch(error){
             if(error.response && error.response.status >= 400 && error.response.status <= 500){
-                setError(error.response.data.message)
+                if(typeof error.response.data.message === "object"){
+                    setFieldErrors(error.response.data.message);
+                }
+                else{
+                    setError(error.response.data.message)
+                }
             }
         }
         finally{
@@ -38,21 +45,19 @@ function Register(){
             <h2 className="font5 text-xl text-center m-4">Utwórz konto</h2>
             <form className="max-w-md mx-auto flex flex-col" onSubmit={handleSubmit}>
                 <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 text-color4 bg-bgcolor2 shadow-sm placeholder-color5" 
-                onChange={handleChange} value={data.username}  placeholder="Nazwa Użytkownika" name="username" required />
+                onChange={handleChange} value={data.username}  placeholder="Nazwa Użytkownika" name="username"  />
+                {fieldErrors.username && (<p className="text-red-500 text-sm mt-[-12px] ml-4">{fieldErrors.username}</p>)}
                 <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 text-color4 bg-bgcolor2 shadow-sm placeholder-color5" 
-                onChange={handleChange} value={data.email}  placeholder="Adres Email" name="email" type="email" required />
+                onChange={handleChange} value={data.email}  placeholder="Adres Email" name="email" type="email"  />
+                {fieldErrors.email && <p className="text-red-500 text-sm mt-[-12px] ml-4">{fieldErrors.email}</p>}
                 <input className="m-4 px-4 py-1 border border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 text-color4 bg-bgcolor2 shadow-sm placeholder-color5" 
-                onChange={handleChange} value={data.password} type="password" placeholder="Hasło" name="password" required />
+                onChange={handleChange} value={data.password} type="password" placeholder="Hasło" name="password"  />
+                {fieldErrors.password && <p className="text-red-500 text-sm mt-[-12px] ml-4">{fieldErrors.password}</p>}
                 
-                
-{error && (
-  <div className="bg-red-100 text-red-700 border border-red-400 px-4 py-2 rounded-md mx-4 mt-2 text-sm flex items-center gap-2 shadow-sm">
-    <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.707-11.707a1 1 0 10-1.414 1.414L9.586 10l-.293.293a1 1 0 101.414 1.414L11.414 10l.293-.293a1 1 0 00-1.414-1.414z" clipRule="evenodd" />
-    </svg>
-    <span>{error}</span>
-  </div>
-)}
+                {error && (
+                <div className="error px-4 text-red-500">
+                    <span>{error}</span>
+                </div>)}
                 <button type="submit" className={`bgcolor4 text-white font-text py-2 m-4 rounded-lg flex items-center justify-center gap-2 transition duration-300 ${
                 isSubmitting ? 'cursor-not-allowed' : 'hover:bg-color5 hover:text-color4' }`} disabled={isSubmitting}>
                 {isSubmitting ? (
