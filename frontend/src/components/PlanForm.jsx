@@ -5,6 +5,7 @@ import axios from "axios";
 const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
     const location = useLocation();
     const navigate = useNavigate();
+    const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [plan, setPlan] = useState(
         initialPlan ?? {
@@ -37,6 +38,7 @@ const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
         e.preventDefault();
         setIsSubmitting(true);
         try{
+            setErrors({})
             const token = localStorage.getItem("token")
                 const config = {
                     method: edit ? "PUT" : "POST",
@@ -58,9 +60,7 @@ const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
         }
         catch(error){
             if (error.response && error.response.status >= 400 && error.response.status <= 500) {
-                setError(error.response.data.message)
-                localStorage.removeItem("token");
-                window.location.reload();
+                setErrors(error.response.data.message)
             }
         }
         finally{
@@ -192,13 +192,18 @@ const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
     return (
         <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl mx-auto rounded-xl bgcolor4 p-10">
             <h2 className="text-color1 font5 text-3xl">{edit ? "Edytuj Plan" : "Nowy Plan Podróży" }</h2>
-            <input name="title" type="text" placeholder="Tytuł" value={plan.title}  onChange={(e) => setPlan({ ...plan, title: e.target.value })} className="w-full border p-2 border-color5 rounded-md color1 focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+            <input name="title" type="text" placeholder="Tytuł" value={plan.title}  onChange={(e) => setPlan({ ...plan, title: e.target.value })} className="w-full border p-2 border-color5 rounded-md color1 focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" />
+            {errors.title && <div className="text-red-800 px-4">{errors.title}</div>}
             <textarea name="description" placeholder="Opis" value={plan.description} onChange={(e) => setPlan({ ...plan, description: e.target.value })} rows={5} className="w-full p-2 border border-color5 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"/>
-            <input name="mainDestination" placeholder="Główna destynacja" value={plan.mainDestination}  onChange={(e) => setPlan({ ...plan, mainDestination: e.target.value })} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+            {errors.description && <div className="text-red-800 px-4">{errors.description}</div>}
+            <input name="mainDestination" placeholder="Główna destynacja" value={plan.mainDestination}  onChange={(e) => setPlan({ ...plan, mainDestination: e.target.value })} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" />
+            {errors.mainDestination && <div className="text-red-800 px-4">{errors.mainDestination}</div>}
             <div className="flex gap-4">  
-                <input name="startDate" type="date" value={plan.startDate} onChange={(e) => setPlan({ ...plan, startDate: e.target.value })} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
-                <input name="endDate" type="date" value={plan.endDate} onChange={(e) => setPlan({ ...plan, endDate: e.target.value })} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                <input name="startDate" type="date" value={plan.startDate} onChange={(e) => setPlan({ ...plan, startDate: e.target.value })} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" />
+                <input name="endDate" type="date" value={plan.endDate} onChange={(e) => setPlan({ ...plan, endDate: e.target.value })} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" />
             </div>
+            {errors.startDate && <div className="text-red-800 px-4">{errors.startDate}</div>}
+            {errors.endDate && <div className="text-red-800 px-4">{errors.endDate}</div>}
             <div>
                 <div className="flex justify-between items-center">
                     <h3 className="text-xl font5 color1">Noclegi</h3>
@@ -215,21 +220,21 @@ const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
                             </button>
                         </div>
                         <input name="name" placeholder="Nazwa" value={acc.name} onChange={(e) => handleAccommodationChange(index, e)} 
-                        className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
-                         <input name="location" placeholder="Lokalizacja" value={acc.location} onChange={(e) => handleAccommodationChange(index, e)} 
-                        className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
-                         <input name="nightCost" type="number" placeholder="Koszt za noc" value={acc.nightCost} onChange={(e) => handleAccommodationChange(index, e)} 
-                        className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                        className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" />
+                        <input name="location" placeholder="Lokalizacja" value={acc.location} onChange={(e) => handleAccommodationChange(index, e)} 
+                        className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" />
+                        <input name="nightCost" type="number" placeholder="Koszt za noc" value={acc.nightCost} onChange={(e) => handleAccommodationChange(index, e)} 
+                        className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" />
                         <h3 className="pt-4 font-text color1">Data zameldowania i wymeldowania</h3>
                         <div className="flex gap-4">  
-                            <input name="startDate" type="date" value={acc.startDate} onChange={(e) => handleAccommodationChange(index, e)} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
-                            <input name="endDate" type="date" value={acc.endDate} onChange={(e) => handleAccommodationChange(index, e)} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" required/>
+                            <input name="startDate" type="date" value={acc.startDate} onChange={(e) => handleAccommodationChange(index, e)} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" />
+                            <input name="endDate" type="date" value={acc.endDate} onChange={(e) => handleAccommodationChange(index, e)} className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5" />
                         </div>
                         <input name="checkIn" placeholder="Zameldowanie" value={acc.checkIn} onChange={(e) => handleAccommodationChange(index, e)} 
                         className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"/>
                         <input name="checkOut" placeholder="Wymeldowanie" value={acc.checkOut} onChange={(e) => handleAccommodationChange(index, e)} 
                         className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"/>
-                          <textarea name="notes" placeholder="Notatki" value={acc.notes} onChange={(e) => handleAccommodationChange(index, e)} className="w-full border p-1 rounded"/>
+                          <textarea name="notes" placeholder="Notatki" value={acc.notes} onChange={(e) => handleAccommodationChange(index, e)} className="w-full border p-1 rounded placeholder-color5"/>
                     </div>
                     )
                 })} 
@@ -299,7 +304,7 @@ const PlanForm = ({ initialPlan = null, edit = false, onSubmit }) => {
                             <input name="duration" placeholder="Czas trwania" value={atr.duration} onChange={(e) => handleAttractionChange(index, e)} 
                             className="w-full border p-2 border-color5 rounded-md focus:outline-none focus:ring-2 focus:ring-bgcolor4 focus:border-bgcolor4 bg-bgcolor2 shadow-sm placeholder-color5"/>
                         </div>
-                        <textarea name="notes" placeholder="Notatki" value={atr.notes} onChange={(e) => handleAttractionChange(index, e)} className="w-full border p-1 rounded"/>
+                        <textarea name="notes" placeholder="Notatki" value={atr.notes} onChange={(e) => handleAttractionChange(index, e)} className="w-full border p-1 rounded placeholder-color5"/>
                     </div>
                     )
                 })} 
