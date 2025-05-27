@@ -14,7 +14,6 @@ app.use(express.json());
 app.use(cors());
 
 //routes
-app.get("/api/users",tokenVerification)
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/plans', planRoutes);

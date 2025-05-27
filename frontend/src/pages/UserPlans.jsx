@@ -21,23 +21,21 @@ function UserPlans(){
     }, [location.state, navigate])
 
     useEffect(() => {
-        const fetchUser = async () => {
+        const fetchUsersPlans = async () => {
             const token = localStorage.getItem("token")
             if(token){
                 try{
                     const config = {
-                        method: "GET",
-                        url: "http://localhost:3001/api/user/",
                         headers: {
                             'Content-Type': 'application/json',
                             'x-access-token': token
                         }
                     }
-                    const {data:res} = await axios(config)
-                    setUser(res.data);
-                    if(res.data._id){
-                        fetchPlans(res.data._id)
-                    }
+                    const { data: userRes } = await axios.get("http://localhost:3001/api/user/", config);
+                    setUser(userRes.data);
+
+                    const { data: plansRes } = await axios.get("http://localhost:3001/api/plans/", config);
+                    setPlans(plansRes.data);
                 }
                 catch(error){
                     if(error.response && error.response.status >= 400 && error.response.status <=500){
@@ -49,26 +47,7 @@ function UserPlans(){
             }
         };
 
-        const fetchPlans = async (userId) => {
-             try{
-                const token = localStorage.getItem("token")
-                const config = {
-                    method: "GET",
-                    url: "http://localhost:3001/api/plans/",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-access-token': token
-                    }
-                }
-                const {data:res} = await axios(config)
-                setPlans(res.data);
-            }
-            catch(error){
-                console.error("Błąd przy pobieraniu planów podróży użytkownika", error.message);
-            }
-        };
-
-        fetchUser();
+        fetchUsersPlans();
     }, []);
 
 

@@ -9,7 +9,6 @@ function UserPanel(){
     const [plans, setPlans] = useState([]);
     const [upcomingPlans, setUpcomingPlans] = useState([]);
     const [selectedPlan, setSelectedPlan] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -86,8 +85,7 @@ function UserPanel(){
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4">
                         {upcomingPlans.map(plan => (
                             <PlanCard key={plan._id} plan={plan} onDetailsClick={() => {
-                                setSelectedPlan(plan)
-                                setIsModalOpen(true)}}/>
+                                setSelectedPlan(plan)}}/>
                         ))}
                         {selectedPlan && (
                         <PlanModal plan={selectedPlan} onClose={() => setSelectedPlan(null)}/>)}

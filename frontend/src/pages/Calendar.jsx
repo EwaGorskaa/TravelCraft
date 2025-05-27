@@ -24,20 +24,20 @@ function CalendarPage() {
                     'x-access-token': token
                 }
             }
-            const res = await axios(config);
-            const plansFromResponse = res.data.data;  
-            const colors = ["#A8D5BA", "#FFD6A5", "#FFABAB", "#D7E3FC", "#E2F0CB", "#FFC8DD", "#B5EAD7", "#CBAACB", "#FFDAC1", "#D0F4DE",];
-        const formatted = plansFromResponse.map((plan, i) => ({
-          id: plan._id,
-          title: plan.title,
-          start: plan.startDate,
-          backgroundColor: colors[i % colors.length],
-          borderColor: colors[i % colors.length],
-          extendedProps: { ...plan },
-          end: new Date(new Date(plan.endDate).getTime() + 24 * 60 * 60 * 1000).toISOString().split("T")[0],
-          allDay: true
-        }));
-        setPlans(formatted)
+          const res = await axios(config);
+          const plansFromResponse = res.data.data;  
+          const colors = ["#A8D5BA", "#FFD6A5", "#FFABAB", "#D7E3FC", "#E2F0CB", "#FFC8DD", "#B5EAD7", "#CBAACB", "#FFDAC1", "#D0F4DE",];
+          const formatted = plansFromResponse.map((plan, i) => ({
+            id: plan._id,
+            title: plan.title,
+            start: plan.startDate,
+            backgroundColor: colors[i % colors.length],
+            borderColor: colors[i % colors.length],
+            extendedProps: { ...plan },
+            end: new Date(new Date(plan.endDate).getTime() + 24 * 60 * 60 * 1000).toISOString().split("T")[0],
+            allDay: true
+          }));
+          setPlans(formatted)
       }
       catch(error){
         console.error("Błąd podczas pobierania planów:", error);

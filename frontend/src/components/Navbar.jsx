@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 function Navbar() {
-
-    const links = ["Zaplanuj Podróż", "Moje Plany", "Mapa Podróży", "Kalendarz", "Wyloguj się"];
+  
     const handleLogout = () => {
       localStorage.removeItem("token")
       window.location.reload()

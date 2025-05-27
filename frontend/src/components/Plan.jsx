@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AccommodationList from "../components/AccomodationList";
 import TransportList from "../components/TransportList";
@@ -7,7 +6,6 @@ import AttractionList from "../components/AttractionList";
 import { FaCheckCircle, FaClock, FaPlaneDeparture } from "react-icons/fa";
 
 function Plan({plan, onDelete}){
-    const navigate = useNavigate();
     const [expanded, setExpanded] = useState(false);
     const [error, setError] = useState(null)
 
@@ -34,7 +32,7 @@ function Plan({plan, onDelete}){
                 <div>
                     <div className="flex items-center space-x-2">
                     <h2 className="text-xl font-text font-bold text-color2">{plan.title} </h2>
-                                            <span className="ml-2 italic text-sm font-normal font-italic text-gray-600 flex items-center">
+                        <span className="ml-2 italic text-sm font-normal font-italic text-gray-600 flex items-center">
                             ({status.label}) {status.icon}
                         </span>
                         </div>
