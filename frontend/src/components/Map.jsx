@@ -1,14 +1,15 @@
-import { MapContainer, TileLayer, Marker, Tooltip, useMapEvents } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import "leaflet/dist/leaflet.css";
-import markerIconPng from 'leaflet/dist/images/marker-icon.png';
-import markerShadowPng from 'leaflet/dist/images/marker-shadow.png';
+import { FaTrash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Map = () => {
   const [pins, setPins] = useState([]);
+  const navigate = useNavigate();
   function MapClickHandler({ onClick}) {
     useMapEvents({
       click(e){
@@ -18,6 +19,39 @@ const Map = () => {
     return null;
   }
 
+  
+  const deletePin = async (id) =>{
+        const confirmed = window.confirm("Czy na pewno chcesz usunąć tę pinezkę?");
+        if(!confirmed) return;
+
+        try{
+            const token = localStorage.getItem("token")
+            if(token){
+                const config = {
+                    method:"DELETE",
+                    url: `http://localhost:3001/api/pins/${id}`,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-access-token': token
+                    }
+                }
+            const res = await axios(config);
+            setPins((prev) => prev.filter((pin) => pin._id !== id));
+            navigate('/map', { state: { message: "Usunięto pomyślnie pinezkę!" } }); 
+  
+            }
+            else{
+                alert("Brak tokenu - musisz być zalogowany, aby usunąć pinezkę");
+            }    
+        }
+        catch(error){
+            if (error.response && error.response.status >= 400 && error.response.status <= 500) {
+            alert(error.response.data.message);
+            }
+            
+        }
+
+    }
 const createMarker = (color) => {
   
   const svgIcon = `
@@ -117,9 +151,14 @@ fetchPins();
         <MapClickHandler onClick={handleMapClick}/>
         {pins.map(pin =>(
           <Marker key={pin._id} position={[pin.lat, pin.lng]} icon={createMarker(colors[pin.type])}>
-          <Tooltip>{pin.title}</Tooltip>
+            <Popup>
+              <div className="flex flex-col justify-between items-center">  
+                <p className="font-semibold">{pin.title}</p>
+                  <FaTrash onClick={() => deletePin(pin._id)} />
+                </div>
+            </Popup>
             </Marker>
-        ))}
+          ))}
       </MapContainer>
     </div>
   );
